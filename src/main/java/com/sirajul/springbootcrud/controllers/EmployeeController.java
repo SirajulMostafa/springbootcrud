@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sirajul.springbootcrud.domain.Employee;
 import com.sirajul.springbootcrud.repositories.EmployeeService;
@@ -79,31 +81,29 @@ public class EmployeeController {
     }
 	
 	
-	@GetMapping("update/{id}")
-    public String showUpdateForm(@PathVariable("id") long id, Model model) {
-		Optional<Employee> emOptional = employeeService.getEmployeeById(id);
-		if(emOptional.isPresent()) {
-			model.addAttribute("employee",emOptional.get());
-		}
-		
-        return "employee/update";
-    }
-	
-	@PostMapping("update/{id}")
-    public String updateEmployee(@PathVariable("id") long id, @Valid Employee employee, BindingResult result,
-        Model model) {
-        if (result.hasErrors()) {
-            employee.setId(id);
-            return "employee/update";
-        }
-
-        employeeService.saveEmployee(employee);
-        model.addAttribute("employee", employeeService.getAllEmployees());
-        return getAllEmployees(model);
-    }
-
+	//for update modal get request
+	@GetMapping("updateModal/{id}")
+	@ResponseBody
+  public Optional<Employee> updateModal(@PathVariable("id") long id) {
+		System.out.println("updateModalRequest");
+		return employeeService.getEmployeeById(id);
+  }
 	
 	
+	@PostMapping(value="/addNewEmployee")
+	public String addNewEmployee(Employee employee) {
+		System.out.println("addnewEmployee fired");
+		employeeService.addNewEmployee(employee);
+		return "redirect:";
+	}
+	
+	
+	@PostMapping(value="update")
+	public String update(Employee employee) {
+		System.out.println("updateEmployee");
+		employeeService.updateEmployee(employee);
+		return "redirect:";
+	}
 	
 
 }

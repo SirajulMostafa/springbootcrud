@@ -11,9 +11,11 @@ import com.sirajul.springbootcrud.domain.Employee;
 public interface EmployeeService {
 
 	    Employee saveEmployee(Employee employee);
+	    Employee addNewEmployee(Employee employee);
 	    List<Employee> getAllEmployees();
 	    Optional<Employee> getEmployeeById(long id);
 	    Employee updateEmployee(Employee updatedEmployee);
 	    void deleteEmployee(long id);
+	    
 }
 
